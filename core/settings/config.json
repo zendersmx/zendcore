@@ -4,9 +4,9 @@
 		"HOST_DATABSE":"localhost",
 		"TYPE_DATABASE":"MYSQLi",
 		"PORT_DATABASE":3306,
-		"SCHEMA_DATABASE":"zendersm_testjorge",  
-		"USER_DATABASE":"zendersm",
-		"PASSWORD_DATABASE":"66VP96edxa",
+		"SCHEMA_DATABASE":"name_database",  
+		"USER_DATABASE":"root",
+		"PASSWORD_DATABASE":"password",
 		"PERSISTENT":true
 	},
 	"SSL_SET":{
@@ -20,11 +20,7 @@
 		"DEFAULT_VIEW":"HOME"
 	},
 	"VIEWS_SET":[
-		"HOME",
-		"TEST",
-		"JEXAMPLE",
-		"OEXAMPLE",
-		"AEXAMPLE"
+		"HOME"
 	],
 	"LANGUAGE_SET":[
 		"ES",
