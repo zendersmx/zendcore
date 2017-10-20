@@ -1,0 +1,229 @@
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresDefault                                      "access plus 1 month"
+  # CSS
+    ExpiresByType text/css                              "access plus 1 month"
+  # Intercambio de Data
+    ExpiresByType application/json                      "access plus 0 seconds"
+    ExpiresByType application/ld+json                   "access plus 0 seconds"
+    ExpiresByType application/xml                       "access plus 0 seconds"
+    ExpiresByType text/xml                              "access plus 0 seconds"
+  # Favicon
+    ExpiresByType image/x-icon                          "access plus 1 week"
+  # HTML componentes
+    ExpiresByType text/x-component                      "access plus 1 month"
+  # HTML
+    ExpiresByType text/html                             "access plus 0 seconds"
+  # JavaScript
+    ExpiresByType application/javascript                "access plus 1 month"
+    ExpiresByType text/x-javascript                     "access plus 1 month"
+  # Manifest archivos
+    ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
+    ExpiresByType text/cache-manifest                   "access plus 0 seconds"
+  # Media
+    ExpiresByType audio/ogg                             "access plus 1 month"
+    ExpiresByType image/gif                             "access plus 1 month"
+    ExpiresByType image/jpeg                            "access plus 1 month"
+    ExpiresByType image/png                             "access plus 1 month"
+    ExpiresByType video/mp4                             "access plus 1 month"
+    ExpiresByType video/ogg                             "access plus 1 month"
+    ExpiresByType video/webm                            "access plus 1 month"
+  # Web feeds
+    ExpiresByType application/atom+xml                  "access plus 1 hour"
+    ExpiresByType application/rss+xml                   "access plus 1 hour"
+  # Webfonts
+    ExpiresByType application/font-woff                 "access plus 1 month"
+    ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
+    ExpiresByType application/x-font-ttf                "access plus 1 month"
+    ExpiresByType font/opentype                         "access plus 1 month"
+    ExpiresByType image/svg+xml                         "access plus 1 month"
+</IfModule>
+
+## EXPIRES CACHING ##
+#php_flag zlib.output_compression On
+#php_value zlib.output_compression_level 9
+#php_value memory_limit 16M
+<ifModule mod_headers.c>
+    Header set Connection keep-alive
+</ifModule>
+#<FilesMatch "\.(php|html|htm|txt|html5|jpg|png|js|css)$">
+#	Header set Cache-Control "max-age=604800"
+#	Header set last-modified "Tus May 15 13:00:00 EDT 2012" 
+#</FilesMatch>
+# Deshabilitar parámetros siguientes
+#<FilesMatch "\.(pl|cgi|spl|html)$">
+#	Header unset Cache-Control
+#	Header unset Expires
+#	Header unset Last-Modified
+#    FileETag None
+#    Header unset ETag
+#	Header unset Pragma
+#</FilesMatch>
+#AddOutputFilterByType DEFLATE text/plain
+#AddOutputFilterByType DEFLATE text/html
+#AddOutputFilterByType DEFLATE text/xml
+#AddOutputFilterByType DEFLATE text/css
+#AddOutputFilterByType DEFLATE application/javascript
+#AddOutputFilterByType DEFLATE application/x-javascript
+#AddOutputFilterByType DEFLATE application/xml
+#AddOutputFilterByType DEFLATE application/xhtml+xml
+#AddOutputFilterByType DEFLATE application/rss+xml 
+#AddOutputFilterByType DEFLATE application/svg+xml
+#########################
+Options +FollowSymlinks
+Options -Indexes
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteOptions MaxRedirects=10
+	
+	RewriteCond %{HTTP:Authorization} ^(.*)
+	RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+		
+	RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-s
+    
+    RewriteRule ^apps/v1/(.*)$ /core/restful/v1/index.php?request=$1 [QSA,NC,L]
+    RewriteRule ^([^/\.]+)/?$ index.php?idioma=$1 [L]
+	RewriteRule ^([^/\.]+)/([^/\.]+)/?$ index.php?idioma=$1&pagina=$2 [L]
+	RewriteRule ^([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ index.php?idioma=$1&pagina=$2&parametro=$3 [L]
+	RewriteRule ^([^/\.]+)-([^/\.]+)/?$ index.php?pagina=$1&proyecto=$2 [L]
+	RewriteRule ^([^/\.]+)/?$ index.php?idioma=$1 [L]
+	RewriteRule ^([^/\.]+)/([^/\.]+)/?$ index.php?idioma=$1&pagina=$2 [L]
+	RewriteRule ^([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ index.php?idioma=$1&pagina=$2&parametro=$3 [L]
+	RewriteRule ^([^/\.]+)-([^/\.]+)/?$ index.php?pagina=$1&proyecto=$2 [L]
+	
+	
+</IfModule>
+##################
+
+######## to protect a file
+<FilesMatch "(\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|htaccess)|~)$">
+  Order allow,deny
+  Deny from all
+  Satisfy All
+</FilesMatch>
+##################
+<IfModule mod_headers.c>
+	# YEAR
+ <FilesMatch "\.(ico|gif|jpg|jpeg|png|flv|pdf)$">
+  Header set Cache-Control "max-age=29030400"
+ </FilesMatch>
+	# WEEK
+ <FilesMatch "\.(js|css|swf)$">
+ Header set Cache-Control "max-age=1604800"
+ </FilesMatch>
+	# 45 MIN
+ <FilesMatch "\.(html|htm|txt)$">
+  Header set Cache-Control "max-age=2700"
+ </FilesMatch>
+ <IfModule mod_deflate.c>
+	# place filter 'DEFLATE' on all outgoing content
+  	SetOutputFilter DEFLATE
+	# exclude uncompressible content via file type
+  	SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|rar|zip)$ no-gzip
+  	<IfModule mod_headers.c>
+		# properly handle requests coming from behind proxies
+   		Header append Vary User-Agent
+	  </IfModule>
+ </IfModule>
+</IfModule>
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
+</IfModule>
+##################
+<ifModule mod_gzip.c>
+mod_gzip_on Yes
+mod_gzip_dechunk Yes
+mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+mod_gzip_item_include handler ^cgi-script$
+mod_gzip_item_include mime ^text/.*
+mod_gzip_item_include mime ^application/x-javascript.*
+mod_gzip_item_exclude mime ^image/.*
+mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+FileETag INode MTime Size
+<IfModule mod_deflate.c>
+<IfModule mod_filter.c>
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+</IfModule>
+</IfModule>
+
+# Webfonts
+
+AddType application/vnd.ms-fontobject  eot
+
+AddType application/x-font-ttf         ttf ttc
+
+AddType font/opentype                  otf
+
+AddType application/x-font-woff        woff
+
+
+
+# Assorted types
+
+AddType image/x-icon                        ico
+
+AddType image/webp                          webp
+
+AddType text/cache-manifest                 appcache manifest
+
+AddType text/x-component                    htc
+
+AddType application/x-chrome-extension      crx
+
+AddType application/x-opera-extension       oex
+
+AddType application/x-xpinstall             xpi
+
+AddType application/octet-stream            safariextz
+
+AddType application/x-web-app-manifest+json webapp
+
+AddType text/x-vcard                        vcf
+
+#AddType x-mapp-php5 .php .html .shtml .htm .js .txt .css
+
+#AddHandler x-mapp-php5 .php .html .shtml .htm .js .txt .css
+
+
+##############################
+
+
+# JavaScript
+
+#   Normalize to standard type (it's sniffed in IE anyways)
+
+#   tools.ietf.org/html/rfc4329#section-7.2
+
+AddType application/javascript         js
+
+
+# Audio
+
+AddType audio/ogg                      oga ogg
+
+AddType audio/mp4                      m4a
+
+# Video
+
+AddType video/ogg                      ogv
+
+AddType video/mp4                      mp4 m4v
+
+AddType video/webm                     webm
+
+
+
+# SVG
+
+#   Required for svg webfonts on iPad
+
+#   twitter.com/FontSquirrel/status/14855840545
+
+AddType     image/svg+xml              svg svgz
+
+AddEncoding gzip                       svgz
+
+

@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" 
+xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" 
+xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" 
+xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+xmlns:tns="http://www.cfe.gob.mx/" 
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" 
+xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+targetNamespace="http://www.cfe.gob.mx/" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.cfe.gob.mx/">
+    
+      <s:element name="LeerMedidores">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="idPeticion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listaPeticionesLectura" type="tns:ArrayOfPeticionOperacionMedidor" />
+            <s:element minOccurs="1" maxOccurs="1" name="lecturaEnLinea" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="limiteDiasAntiguedadLectura" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      
+      <s:complexType name="ArrayOfPeticionOperacionMedidor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PeticionOperacionMedidor" nillable="true" type="tns:PeticionOperacionMedidor" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PeticionOperacionMedidor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Medidor" type="tns:Medidor" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListaTiposLectura" type="tns:ArrayOfTiposLectura" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Medidor">
+        <s:sequence>
+			<s:element minOccurs="0" maxOccurs="1" name="NumeroMedidor" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTiposLectura">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TiposLectura" type="tns:TiposLectura" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TiposLectura">
+        <s:restriction base="s:string">
+          <s:enumeration value="ConsumoTotal" />
+          <s:enumeration value="ConsumoFase1" />
+          <s:enumeration value="ConsumoFase2" />
+          <s:enumeration value="ConsumoFase3" />
+          <s:enumeration value="ConsumoDiurno" />
+          <s:enumeration value="ConsumoNocturno" />
+          <s:enumeration value="ConsumoEnergiaEntregada" />
+          <s:enumeration value="ConsumoEnergiaRecibida" />
+          <s:enumeration value="DemandaMaxima" />
+          <s:enumeration value="Reactivos" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="LeerMedidoresResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeerMedidoresResult" type="tns:RespuestaPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RespuestaPeticion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Respuesta" type="tns:RespuestasPeticion" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodigoError" type="tns:CodigosErrorPeticion" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="RespuestasPeticion">
+        <s:restriction base="s:string">
+          <s:enumeration value="OK" />
+          <s:enumeration value="ERROR" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="CodigosErrorPeticion">
+        <s:restriction base="s:string">
+          <s:enumeration value="Ninguno" />
+          <s:enumeration value="BaseDeDatosNoDisponible" />
+          <s:enumeration value="ErrorEscrituraEnDisco" />
+          <s:enumeration value="MemoriaInsuficiente" />
+          <s:enumeration value="TamanioPeticionFueraLimite" />
+          <s:enumeration value="LimitePeticionesAlcanzado" />
+          <s:enumeration value="RespaldoEnProceso" />
+          <s:enumeration value="MantenimientoDelSistemaEnProceso" />
+          <s:enumeration value="ErrorEnAutentificacion" />
+          <s:enumeration value="WsNoDisponible" />
+          <s:enumeration value="OtrosErrores" />
+        </s:restriction>
+      </s:simpleType>
+     <s:element name="ComprobarEstadoServicios">
+        <s:complexType />
+      </s:element>
+       <s:element name="ComprobarEstadoServiciosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ComprobarEstadoServiciosResult" type="tns:ResultadoComprobarEstadoServicios" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ResultadoComprobarEstadoServicios">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EstadoServicios" type="tns:EstadoServiciosSistema" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodigoErrorPeticion" type="tns:CodigosErrorPeticion" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescripcionProblemaEnServicios" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EstadoServiciosSistema">
+        <s:restriction base="s:string">
+          <s:enumeration value="Disponibles" />
+          <s:enumeration value="ConProblemas" />
+        </s:restriction>
+      </s:simpleType>
+	  <s:element name="ResultadoComprobarEstadoServicios" nillable="true" type="tns:ResultadoComprobarEstadoServicios" />
+	 <!-- START DesconectarMedidores -->
+     <s:element name="DesconectarMedidores">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="idPeticion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listaMedidores" type="tns:ArrayOfPeticionOperacionMedidor" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DesconectarMedidoresResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DesconectarMedidoresResult" type="tns:RespuestaPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+     <!-- END DesconectarMedidores -->
+     
+     <!-- START DesconectarMedidores -->
+     <s:element name="ReconectarMedidores">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="idPeticion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listaMedidores" type="tns:ArrayOfPeticionOperacionMedidor" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReconectarMedidoresResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReconectarMedidoresResult" type="tns:RespuestaPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+     <!-- END DesconectarMedidores -->
+     
+      <!-- START ActualizarDatosMedidores -->
+     <s:element name="ActualizarDatosMedidores">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="idPeticion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listaDatosMedidores" type="tns:ArrayofDatosParaActualizarMedidor" />
+          </s:sequence>
+        </s:complexType>
+    </s:element>
+    <s:complexType name="ArrayofDatosParaActualizarMedidor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DatosParaActualizarMedidor" nillable="true" type="tns:DatosParaActualizarMedidor" />
+        </s:sequence>
+      </s:complexType>
+       <s:complexType name="DatosParaActualizarMedidor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Medidor" type="tns:Medidor" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodigoMedidor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LoteMedidor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EstadoMedidor" type="tns:EstadoMedidor" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cliente" type="tns:Cliente" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReiniciarContadores" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+       <s:simpleType name="EstadoMedidor">
+        <s:restriction base="s:string">
+          <s:enumeration value="Activo" />
+          <s:enumeration value="Inactivo" />
+          <s:enumeration value="Baja" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Cliente">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Rpu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Direccion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cuenta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Tarifa" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroHilos" type="s:integer" />
+          <s:element minOccurs="0" maxOccurs="1" name="DemandaContratada" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="EsBidireccional" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+    <s:element name="ActualizarDatosMedidoresResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ActualizarDatosMedidoresResult" type="tns:RespuestaPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+     <!-- END ActualizarDatosMedidores -->
+     
+     
+     <!-- START ConsultarDatosMedidores -->
+     
+     <s:element name="ConsultarDatosMedidores">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="idPeticion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="listaMedidores" type="tns:listaMedidores" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultarDatosMedidoresResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultarDatosMedidoresResult" type="tns:RespuestaPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      
+       <s:complexType name="listaMedidores">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Medidor" type="tns:Medidor" />
+        </s:sequence>
+      </s:complexType>
+      
+     <!-- END ConsultarDatosMedidores -->
+     
+     <!-- START ConsultarDatosMedidores -->
+     
+     <s:element name="ObtenerEventosMedidor">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="idPeticion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="medidorAConsultar" type="tns:medidorAConsultar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      
+       <s:complexType name="medidorAConsultar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Medidor" type="tns:Medidor" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListaTiposLectura" type="tns:ArrayOfTiposLectura" />
+          <s:element minOccurs="0" maxOccurs="1" name="fechaDesde" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="fechaHasta" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      
+      <s:element name="ObtenerEventosMedidorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerEventosMedidorResult" type="tns:RespuestaPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      
+      
+     <!-- END ConsultarDatosMedidores -->
+     
+     <!-- START ConsultarDatosMedidores -->
+     
+     <s:element name="ConsultarEstadoPeticiones">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listaPeticiones" type="tns:arraylistaPeticiones" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      
+       <s:complexType name="arraylistaPeticiones">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Peticion"  type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      
+      <s:element name="ConsultarEstadoPeticionesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultarEstadoPeticionesResult" type="tns:arrayResultadoConsultarEstadoPeticion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      
+       <s:complexType name="arrayResultadoConsultarEstadoPeticion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ResultadoConsultarEstadoPeticion"  type="tns:ConsultarEstadoPeticion" />
+        </s:sequence>
+      </s:complexType>
+  
+ 	<s:complexType name="ConsultarEstadoPeticion">
+       <s:sequence>
+         <s:element minOccurs="0" maxOccurs="1" name="IdPeticion" type="s:string" />
+         <s:element minOccurs="0" maxOccurs="1" name="EstadoPeticion" type="tns:EstadoPeticion" />
+         <s:element minOccurs="0" maxOccurs="1" name="PorcentajeAvance" type="s:int" />
+         <s:element minOccurs="0" maxOccurs="1" name="CodigoErrorPeticion" type="tns:CodigosErrorPeticion" />
+         <s:element minOccurs="0" maxOccurs="1" name="DescripcionErrorPeticion" type="s:dateTime" />
+       </s:sequence>
+     </s:complexType>
+     
+      <s:simpleType name="EstadoPeticion">
+        <s:restriction base="s:string">
+          <s:enumeration value="EnProceso" />
+          <s:enumeration value="Pausada" />
+          <s:enumeration value="Abortada" />
+          <s:enumeration value="Completada" />
+          <s:enumeration value="Desconocido" />
+        </s:restriction>
+      </s:simpleType>
+      
+     <!-- END ConsultarDatosMedidores -->
+     
+     
+    </s:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="LeerMedidoresRequest">
+    <wsdl:part element="tns:LeerMedidores" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="LeerMedidoresResponse">
+    <wsdl:part element="tns:LeerMedidoresResponse" name="parameters"/>
+  </wsdl:message>
+  
+  <wsdl:message name="ComprobarEstadoServiciosRequest"/>
+  <wsdl:message name="ComprobarEstadoServiciosResponse">
+  	<wsdl:part name="parameters" element="tns:ComprobarEstadoServiciosResponse"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="DesconectarMedidoresRequest">
+    <wsdl:part element="tns:DesconectarMedidores" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="DesconectarMedidoresResponse">
+    <wsdl:part element="tns:DesconectarMedidoresResponse" name="parameters"/>
+  </wsdl:message>
+  
+   <wsdl:message name="ReconectarMedidoresRequest">
+    <wsdl:part element="tns:ReconectarMedidores" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ReconectarMedidoresResponse">
+    <wsdl:part element="tns:ReconectarMedidoresResponse" name="parameters"/>
+  </wsdl:message>
+  
+  <wsdl:message name="ActualizarDatosMedidoresRequest">
+    <wsdl:part element="tns:ActualizarDatosMedidores" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ActualizarDatosMedidoresResponse">
+    <wsdl:part element="tns:ActualizarDatosMedidoresResponse" name="parameters"/>
+  </wsdl:message>
+  
+  <wsdl:message name="ConsultarDatosMedidoresRequest">
+    <wsdl:part element="tns:ConsultarDatosMedidores" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ConsultarDatosMedidoresResponse">
+    <wsdl:part element="tns:ConsultarDatosMedidoresResponse" name="parameters"/>
+  </wsdl:message>
+  
+  <wsdl:message name="ObtenerEventosMedidorRequest">
+    <wsdl:part element="tns:ObtenerEventosMedidor" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ObtenerEventosMedidorResponse">
+    <wsdl:part element="tns:ObtenerEventosMedidorResponse" name="parameters"/>
+  </wsdl:message>
+  
+  <wsdl:message name="ConsultarEstadoPeticionesRequest">
+    <wsdl:part element="tns:ConsultarEstadoPeticiones" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ConsultarEstadoPeticionesResponse">
+    <wsdl:part element="tns:ConsultarEstadoPeticionesResponse" name="parameters"/>
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="wsSIGAMI">
+  	<!--  -->
+    <wsdl:operation name="LeerMedidores">
+      <wsdl:input message="tns:LeerMedidoresRequest"/>
+      <wsdl:output message="tns:LeerMedidoresResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ComprobarEstadoServicios">
+    	<wsdl:input message="tns:ComprobarEstadoServiciosRequest"></wsdl:input>
+    	<wsdl:output message="tns:ComprobarEstadoServiciosResponse"></wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+     <wsdl:operation name="DesconectarMedidores">
+      <wsdl:input message="tns:DesconectarMedidoresRequest"/>
+      <wsdl:output message="tns:DesconectarMedidoresResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ReconectarMedidores">
+      <wsdl:input message="tns:ReconectarMedidoresRequest"/>
+      <wsdl:output message="tns:ReconectarMedidoresResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ActualizarDatosMedidores">
+      <wsdl:input message="tns:ActualizarDatosMedidoresRequest"/>
+      <wsdl:output message="tns:ActualizarDatosMedidoresResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ConsultarDatosMedidores">
+      <wsdl:input message="tns:ConsultarDatosMedidoresRequest"/>
+      <wsdl:output message="tns:ConsultarDatosMedidoresResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ObtenerEventosMedidor">
+      <wsdl:input message="tns:ObtenerEventosMedidorRequest"/>
+      <wsdl:output message="tns:ObtenerEventosMedidorResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    
+     <!--  -->
+    <wsdl:operation name="ConsultarEstadoPeticiones">
+      <wsdl:input message="tns:ConsultarEstadoPeticionesRequest"/>
+      <wsdl:output message="tns:ConsultarEstadoPeticionesResponse"/>
+    </wsdl:operation>
+    <!--  -->
+    
+  </wsdl:portType>
+  <wsdl:binding name="wsSIGAMISOAP12" type="tns:wsSIGAMI">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <!--  -->
+    <wsdl:operation name="LeerMedidores">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/LeerMedidores"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ComprobarEstadoServicios">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/ComprobarEstadoServicios" style="document" />
+      <wsdl:input>
+      	<soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="DesconectarMedidores">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/DesconectarMedidores"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+     <wsdl:operation name="ReconectarMedidores">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/ReconectarMedidores"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+     <wsdl:operation name="ActualizarDatosMedidores">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/ActualizarDatosMedidores"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ConsultarDatosMedidores">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/ConsultarDatosMedidores"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <!--  -->
+    <wsdl:operation name="ObtenerEventosMedidor">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/ObtenerEventosMedidor"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="ConsultarEstadoPeticiones">
+      <soap12:operation soapAction="http://www.cfe.gob.mx/ConsultarEstadoPeticiones"/>
+      <wsdl:input>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body namespace="http://www.cfe.gob.mx/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <!--  -->
+  </wsdl:binding>
+  <wsdl:service name="wsSIGAMI">
+    <wsdl:port binding="tns:wsSIGAMISOAP12" name="wsSIGAMISOAP">
+      <soap12:address location="https://localhost/ws/v1/wsProtcloud"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

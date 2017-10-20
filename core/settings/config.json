@@ -1,0 +1,36 @@
+{
+	"DATABASE_SET":{
+		"_comment" : "MYSQLi,MYSQL,POSTGRESQL,ORACLE,CASSANDRA,MONGODB,MARIADB,SQLITE,progress - root.1234_,Protcloud.com-Protecsa$,POSTGRESQL",
+		"HOST_DATABSE":"localhost",
+		"TYPE_DATABASE":"MYSQLi",
+		"PORT_DATABASE":3306,
+		"SCHEMA_DATABASE":"zendersm_testjorge",  
+		"USER_DATABASE":"zendersm",
+		"PASSWORD_DATABASE":"66VP96edxa",
+		"PERSISTENT":true
+	},
+	"SSL_SET":{
+		"PRIVATE_KEY":"ssl/ca.key",
+		"PUBLIC_KEY":"ssl/pub_key.pub",
+		"CERTIFICATE":"ssl/server.csr"
+	},
+	"SYSTEM_SET":{
+		"DEBUG":false,
+		"HTML_VIEWS":"html",
+		"DEFAULT_VIEW":"HOME"
+	},
+	"VIEWS_SET":[
+		"HOME",
+		"TEST",
+		"JEXAMPLE",
+		"OEXAMPLE",
+		"AEXAMPLE"
+	],
+	"LANGUAGE_SET":[
+		"ES",
+		"EN",
+		"FR",
+		"IT",
+		"TW"
+	]
+}
