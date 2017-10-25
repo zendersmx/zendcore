@@ -1,6 +1,6 @@
 # zendcore
 
-### Zendcore es un framework que permite crear sitios web dinamicos y RESTful api's
+### Zendcore es un framework que permite crear sitios web dinámicos y RESTful api's
 
 Temas:
 ### MVC Zendcore 
